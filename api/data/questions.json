@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "questionText": "What does a yield sign mean?",
+    "options": [
+      {
+        "text": "Slow down and be prepared to stop",
+        "isCorrect": true
+      },
+      {
+        "text": "Proceed with caution",
+        "isCorrect": false
+      },
+      {
+        "text": "Stop and wait for the signal to proceed",
+        "isCorrect": false
+      },
+      {
+        "text": "Stop only if other cars are present",
+        "isCorrect": false
+      }
+    ]
+  }
+]
