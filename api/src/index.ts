@@ -1,4 +1,3 @@
-console.log('Hello world!')
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
