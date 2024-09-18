@@ -1,7 +1,10 @@
 import User from '../models/user.model';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { errorHandler } from '../utils/error';
+import errorHandler from '../utils/error';
+import { NextFunction, Request, Response } from 'express';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 export const signup = async (req: any, res: any, next: any) => {
   const { username, email, password } = req.body;
@@ -33,7 +36,7 @@ export const signup = async (req: any, res: any, next: any) => {
   }
 }
 
-export const signin = async (req: any, res: any, next: any) => {
+export const signin = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
   if (!email || !password || email === '' || password === '') {
@@ -43,7 +46,7 @@ export const signin = async (req: any, res: any, next: any) => {
   try {
     const validUser = await User.findOne({ email });
     if (!validUser) {
-      next(errorHandler(400, 'User not found!'))
+      return next(errorHandler(400, 'User not found!'));
     }
 
     const validPassword = bcrypt.compareSync(password, validUser.password);
@@ -53,10 +56,15 @@ export const signin = async (req: any, res: any, next: any) => {
 
     const token = jwt.sign(
       { id: validUser._id, isAdmin: validUser.isAdmin },
-      process.env.JWT_SECRET
+      JWT_SECRET
     );
 
-    const { password: hashedPassword, ...userInfo } = validUser._doc;
+    const { password: hashedPassword, ...userInfo } = (validUser as any)._doc;
+
+    res.status(200).json({
+      token,
+      user: userInfo,  // Send user information excluding password
+    });
   } catch (error) {
     next(error)
   }
