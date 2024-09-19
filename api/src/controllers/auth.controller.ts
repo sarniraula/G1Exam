@@ -4,8 +4,6 @@ import jwt from 'jsonwebtoken';
 import errorHandler from '../utils/error';
 import { NextFunction, Request, Response } from 'express';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret';
-
 export const signup = async (req: any, res: any, next: any) => {
   const { username, email, password } = req.body;
 
@@ -38,7 +36,7 @@ export const signup = async (req: any, res: any, next: any) => {
 
 export const signin = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
-
+  
   if (!email || !password || email === '' || password === '') {
     next(errorHandler(400, 'All fields are required!!'))
   }
@@ -54,15 +52,21 @@ export const signin = async (req: Request, res: Response, next: NextFunction) =>
       next(errorHandler(400, 'Invalid credentials!'))
     }
 
+    const jwtSecret = process.env.JWT_SECRET as string;
+    
     const token = jwt.sign(
       { id: validUser._id, isAdmin: validUser.isAdmin },
-      JWT_SECRET
+      jwtSecret
     );
 
     const { password: hashedPassword, ...userInfo } = (validUser as any)._doc;
 
-    res.status(200).json({
-      token,
+    res.status(200)
+    .cookie('accessToken', token, {
+      httpOnly: true,
+    })
+    .json({
+      accessToken: token,
       user: userInfo,  // Send user information excluding password
     });
   } catch (error) {

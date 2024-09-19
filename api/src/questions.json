@@ -1,0 +1,71 @@
+{
+    "trafficSigns": [
+      {
+        "questionText": "What does this sign mean?",
+        "imageUrl": "https://example.com/images/stop_sign.jpg",
+        "options": [
+          { "text": "Stop", "isCorrect": true },
+          { "text": "Yield", "isCorrect": false },
+          { "text": "Speed Limit", "isCorrect": false },
+          { "text": "No Entry", "isCorrect": false }
+        ]
+      },
+      {
+        "questionText": "What does yellow light mean",
+        "options": [
+          { "text": "Go", "isCorrect": false },
+          { "text": "Stop", "isCorrect": false },
+          { "text": "Yield", "isCorrect": true },
+          { "text": "Speed up", "isCorrect": false }
+        ]
+      },
+      {
+        "questionText": "What does a red traffic light mean?",
+        "options": [
+          { "text": "Go", "isCorrect": false },
+          { "text": "Stop", "isCorrect": true },
+          { "text": "Yield", "isCorrect": false },
+          { "text": "Speed up", "isCorrect": false }
+        ]
+      }
+    ],
+    "trafficRules": [
+      {
+        "questionText": "What is the speed limit in a residential area?",
+        "options": [
+          { "text": "30 km/h", "isCorrect": true },
+          { "text": "50 km/h", "isCorrect": false },
+          { "text": "80 km/h", "isCorrect": false },
+          { "text": "100 km/h", "isCorrect": false }
+        ]
+      },
+      {
+        "questionText": "In Ontario, there is a seat belt law ",
+        "options": [
+          { "text": "Yes", "isCorrect": true },
+          { "text": "No", "isCorrect": false },
+          { "text": "Only when driving on an open highway ", "isCorrect": false },
+          { "text": "Only when driving within a municipality ", "isCorrect": false }
+        ]
+      },
+      {
+        "questionText": "If someone is tailgating you, what should you do?",
+        "options": [
+          { "text": "Move into another lane when it is safe to do so ", "isCorrect": false },
+          { "text": "Slow down slightly to increase the space in front of your car", "isCorrect": false },
+          { "text": "Pull over to let the tailgater pass ", "isCorrect": false },
+          { "text": "Allofthe above ", "isCorrect": true }
+        ]
+      },
+      {
+        "questionText": "When must you yield at a five-way stop?",
+        "options": [
+          { "text": "To the left", "isCorrect": false },
+          { "text": "To the right", "isCorrect": true },
+          { "text": "No one", "isCorrect": false },
+          { "text": "To the person who arrived first", "isCorrect": false }
+        ]
+      }
+    ]
+}
+  

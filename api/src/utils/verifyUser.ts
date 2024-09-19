@@ -2,11 +2,12 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import errorHandler from "./error";
 
-export const verifyUser = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.cookies.access_token;
+export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.cookies.accessToken;
   if(!token) {
     return next(errorHandler(401, 'Unauthorized'));
   }
+  const user = jwt.verify(token, process.env.JWT_SECRET as string);
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET as string);
@@ -16,3 +17,11 @@ export const verifyUser = (req: Request, res: Response, next: NextFunction) => {
     return res.status(403).json({ message: 'Invalid token' });
   }
 }
+
+// export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
+//   if (req.user && req.user.isAdmin) {
+//     next();
+//   } else {
+//     res.status(403).json({ message: 'Admin access only' });
+//   }
+// };
