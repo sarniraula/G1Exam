@@ -3,6 +3,10 @@ import TestQuestion from '../models/testQuestion.model';
 import TestResult from '../models/testResult.model';
 import errorHandler from '../utils/error';
 
+export const testRoute = (req: any, res: any) => {
+  res.status(200).json({ message: 'This is a test route' });
+}
+
 export const fetchQuestions = async (req: any, res: any, next: any) => {
   try {
     const questionsUrl = process.env.QUESTIONS_URL || 'defaultURL';

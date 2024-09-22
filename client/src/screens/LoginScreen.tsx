@@ -1,10 +1,11 @@
-// src/screens/LoginScreen.tsx
 import * as React from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { theme } from '../theme';  // Import the theme
+import { theme } from '../theme'; // Import the theme
+import { useState } from 'react';
+import { storeToken } from '../storage';  // Token storage functions
 
 type FormData = {
   email: string;
@@ -14,9 +15,37 @@ type FormData = {
 const LoginScreen: React.FC = () => {
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const [loading, setLoading] = useState(false); // Loading state
 
-  const onSubmit = (data: FormData) => {
-    Alert.alert('Login Success', `Email: ${data.email}`);
+  // Function to handle login API request
+  const onSubmit = async (data: FormData) => {
+    setLoading(true); // Show loader while logging in
+    try {
+      // Call your login API
+      const res = await fetch('http://192.168.2.112:8000/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password
+        }),
+      });
+      const responseData = await res.json(); // Parse the response body
+    
+      const { accessToken, user } = responseData; // Destructure response data
+      console.log(user.username); // Log the username
+      // Store the token in AsyncStorage
+      await storeToken(accessToken);
+
+      // Show success alert and navigate to the home screen
+      Alert.alert('Login Success', `Welcome, ${user.username}`);
+      navigation.navigate('Home');
+    } catch (error) {
+      // Handle errors from API
+      Alert.alert('Login Failed', 'Invalid email or password');
+    } finally {
+      setLoading(false); // Stop loader
+    }
   };
 
   return (
@@ -32,6 +61,7 @@ const LoginScreen: React.FC = () => {
             value={value}
             placeholder="Enter your email"
             keyboardType="email-address"
+            autoCapitalize="none"
           />
         )}
         name="email"
@@ -55,7 +85,12 @@ const LoginScreen: React.FC = () => {
       />
       {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
 
-      <Button title="Login" onPress={handleSubmit(onSubmit)} />
+      {/* Show loader if logging in */}
+      {loading ? (
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      ) : (
+        <Button title="Login" onPress={handleSubmit(onSubmit)} />
+      )}
 
       <Text style={styles.link} onPress={() => navigation.navigate('Register')}>
         Don't have an account? Register
