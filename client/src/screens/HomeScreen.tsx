@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   startTestButton: {
     width: '80%',
     backgroundColor: theme.colors.primary,
-    paddingVertical: theme.spacing.medium,
+    padding: theme.spacing.medium,
     borderRadius: theme.borderRadius.medium,
     alignItems: 'center',
     marginBottom: theme.spacing.large,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   resultsButton: {
     width: '80%',
     backgroundColor: theme.colors.secondary,
-    paddingVertical: theme.spacing.medium,
+    padding: theme.spacing.medium,
     borderRadius: theme.borderRadius.medium,
     alignItems: 'center',
     marginBottom: theme.spacing.large,
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   upgradeButton: {
     width: '80%',
     backgroundColor: theme.colors.danger,
-    paddingVertical: theme.spacing.medium,
+    padding: theme.spacing.medium,
     borderRadius: theme.borderRadius.medium,
     alignItems: 'center',
   },

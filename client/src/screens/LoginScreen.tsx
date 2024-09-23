@@ -33,7 +33,6 @@ const LoginScreen: React.FC = () => {
       const responseData = await res.json(); // Parse the response body
     
       const { accessToken, user } = responseData; // Destructure response data
-      console.log(user.username); // Log the username
       // Store the token in AsyncStorage
       await storeToken(accessToken);
 
