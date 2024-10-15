@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { storeToken } from '../storage';  // Token storage functions
 
 type FormData = {
-  email: string;
+  email: string; 
   password: string;
 };
 
