@@ -46,19 +46,6 @@ const HomeScreen: React.FC = () => {
         <Text style={styles.tipsTitle}>Daily Driving Tips</Text>
         <Text style={styles.tipText}>Always check your mirrors before changing lanes!</Text>
       </View>
-
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Ionicons name="home-outline" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <Ionicons name="person-outline" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-          <Ionicons name="settings-outline" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
     </LinearGradient>
   );
 };

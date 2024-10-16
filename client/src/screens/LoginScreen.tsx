@@ -9,6 +9,7 @@ import { storeToken } from '../storage';  // Token storage functions
 import { login } from '../redux/userSlice'; // Import the login action
 import { loginUser } from '../api/api';
 import { useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type FormData = {
   email: string; 
@@ -21,6 +22,16 @@ const LoginScreen: React.FC = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const dispatch = useDispatch();
 
+  const storeData = async (token: string, userInfo: any) => {
+    try {
+      // Store token and user info in AsyncStorage
+      await AsyncStorage.setItem('accessToken', token);
+      await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+    } catch (error) {
+      console.error('Error saving data to AsyncStorage:', error);
+    }
+  };
+
   // Function to handle login API request
   const onSubmit = async (data: FormData) => {
     setLoading(true); // Show loader while logging in
@@ -28,6 +39,8 @@ const LoginScreen: React.FC = () => {
     try {
       const {user, token } = await loginUser(email, password); // Call API to login
       dispatch(login({ email, token, isLoggedIn: true }));
+
+      await storeData(token, user); // Store the token and user info in AsyncStorage
 
       // Show success alert and navigate to the home screen
       Alert.alert('Login Success', `Welcome, ${user.username}`);
