@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    subscription: { 
+      type: Boolean, 
+      default: false 
+    },
     profilePicture: {
       type: String,
       default: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
@@ -24,6 +28,14 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    examHistory: [
+      {
+        score: Number,
+        passed: Boolean,
+        date: { type: Date, default: Date.now },
+        answers: Object, // Will store user's exam answers
+      },
+    ],
     isAdmin: {
       type: Boolean,
       default: false,

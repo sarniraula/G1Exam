@@ -17,6 +17,11 @@ export const signup = async (req: any, res: any, next: any) => {
   ) {
     next(errorHandler(400, 'All fields are required!!'))
   }
+
+  let user = await User.findOne({ email });
+  if (user) {
+    return res.status(400).json({ msg: 'User already exists' });
+  }
   
   const hashedPassword = bcrypt.hashSync(password, 10)
 
@@ -28,6 +33,9 @@ export const signup = async (req: any, res: any, next: any) => {
 
   try {
     await newUser.save();
+
+    //Generate JWT
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET as string, { expiresIn: '3h' });
     res.json('Signup successful');
   } catch (error) {
     next(error)
@@ -56,7 +64,8 @@ export const signin = async (req: Request, res: Response, next: NextFunction) =>
     
     const token = jwt.sign(
       { id: validUser._id, isAdmin: validUser.isAdmin },
-      jwtSecret
+      jwtSecret,
+      { expiresIn: '3h' }
     );
 
     const { password: hashedPassword, ...userInfo } = (validUser as any)._doc;

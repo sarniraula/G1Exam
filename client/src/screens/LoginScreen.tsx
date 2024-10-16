@@ -6,6 +6,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { theme } from '../theme'; // Import the theme
 import { useState } from 'react';
 import { storeToken } from '../storage';  // Token storage functions
+import { login } from '../redux/userSlice'; // Import the login action
+import { loginUser } from '../api/api';
+import { useDispatch } from 'react-redux';
 
 type FormData = {
   email: string; 
@@ -16,25 +19,15 @@ const LoginScreen: React.FC = () => {
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
   const navigation = useNavigation<StackNavigationProp<any>>();
   const [loading, setLoading] = useState(false); // Loading state
+  const dispatch = useDispatch();
 
   // Function to handle login API request
   const onSubmit = async (data: FormData) => {
     setLoading(true); // Show loader while logging in
+    const { email, password } = data; // Destructure email from form data
     try {
-      // Call your login API
-      const res = await fetch('http://192.168.2.112:8000/api/auth/signin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password
-        }),
-      });
-      const responseData = await res.json(); // Parse the response body
-    
-      const { accessToken, user } = responseData; // Destructure response data
-      // Store the token in AsyncStorage
-      await storeToken(accessToken);
+      const {user, token } = await loginUser(email, password); // Call API to login
+      dispatch(login({ email, token, isLoggedIn: true }));
 
       // Show success alert and navigate to the home screen
       Alert.alert('Login Success', `Welcome, ${user.username}`);
